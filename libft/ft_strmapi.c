@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/22 16:57:12 by abdait-m         ###   ########.fr       */
+/*   Created: 2019/10/25 17:22:41 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/07/01 12:22:11 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _PHILOSOPHERS_H
+#include "libft.h"
 
-#define _PHILOSOPHERS_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-
-typedef struct s_philo
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char		**options;
-	int			nbr_ps;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			nbr_peat;
-	int			error;
-}				t_philo;
+	char			*mapi;
+	unsigned int	i;
+	unsigned int	len;
 
-#endif
+	if (!s)
+		return (NULL);
+	len = ft_strlen(s);
+	i = 0;
+	mapi = (char *)malloc(sizeof(char) * (len + 1));
+	if (!mapi)
+		return (NULL);
+	while (s[i] != '\0')
+	{
+		mapi[i] = (*f)(i, s[i]);
+		i++;
+	}
+	mapi[i] = '\0';
+	return (mapi);
+}

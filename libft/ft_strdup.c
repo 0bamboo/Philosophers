@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/22 16:57:12 by abdait-m         ###   ########.fr       */
+/*   Created: 2019/10/21 14:15:25 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/07/01 12:19:46 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _PHILOSOPHERS_H
+#include "libft.h"
 
-#define _PHILOSOPHERS_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-
-typedef struct s_philo
+char	*ft_strdup(const char *s)
 {
-	char		**options;
-	int			nbr_ps;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			nbr_peat;
-	int			error;
-}				t_philo;
+	int		i;
+	int		len;
+	char	*tmp;
 
-#endif
+	i = 0;
+	len = ft_strlen(s);
+	tmp = (char *)malloc(len + 1);
+	if (!tmp)
+		return (0);
+	while (i < len + 1)
+	{
+		tmp[i] = s[i];
+		i++;
+	}
+	return (tmp);
+}

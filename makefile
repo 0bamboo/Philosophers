@@ -10,11 +10,11 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = 
+NAME = philo
 
-LIB = 
+LIB = philo.a
 
-MAIN = 
+MAIN = ./srcs/philo.c
 
 LIBFT = ./libft
 
@@ -27,7 +27,7 @@ HEADER = ./header/
 OBJECT = $(FILES:.c=.o)
 
 
-FLAGS = -Wextra -Werror -Wall
+FLAGS = -Wextra -Werror -Wall -pthread
 
 LIBFT_FILES = $(wildcard ./libft/*.c ./libft/*.h)
 

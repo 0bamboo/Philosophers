@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/22 16:57:12 by abdait-m         ###   ########.fr       */
+/*   Created: 2019/10/21 14:13:15 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/05/18 00:45:42 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _PHILOSOPHERS_H
+#include "libft.h"
 
-#define _PHILOSOPHERS_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-
-typedef struct s_philo
+int	ft_tolower(int c)
 {
-	char		**options;
-	int			nbr_ps;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			nbr_peat;
-	int			error;
-}				t_philo;
-
-#endif
+	if (c >= 'A' && c <= 'Z')
+		return ('a' + c - 'A');
+	return (c);
+}

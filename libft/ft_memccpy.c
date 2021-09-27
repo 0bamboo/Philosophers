@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/22 16:57:12 by abdait-m         ###   ########.fr       */
+/*   Created: 2019/10/20 19:27:34 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/07/01 12:01:59 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _PHILOSOPHERS_H
+#include "libft.h"
 
-#define _PHILOSOPHERS_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-
-typedef struct s_philo
+void	*ft_memccpy(void *dest, const void *src, int c, size_t n)
 {
-	char		**options;
-	int			nbr_ps;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			nbr_peat;
-	int			error;
-}				t_philo;
+	unsigned char		*ch;
+	unsigned char		*s;
+	size_t				i;
 
-#endif
+	ch = (unsigned char *)dest;
+	s = (unsigned char *)src;
+	i = 0;
+	while (i < n)
+	{
+		ch[i] = s[i];
+		if (ch[i] == (unsigned char)c)
+			return (ch + i + 1);
+		i++;
+	}
+	return (0);
+}

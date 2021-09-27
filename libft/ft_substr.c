@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/22 16:57:12 by abdait-m         ###   ########.fr       */
+/*   Created: 2019/10/21 14:51:00 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/07/01 12:23:37 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _PHILOSOPHERS_H
+#include "libft.h"
 
-#define _PHILOSOPHERS_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-
-typedef struct s_philo
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char		**options;
-	int			nbr_ps;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			nbr_peat;
-	int			error;
-}				t_philo;
+	size_t		j;
+	char		*sub;
 
-#endif
+	if (!s)
+		return (NULL);
+	sub = (char *)malloc(len + 1);
+	if (!sub)
+		return (NULL);
+	if (start > ft_strlen(s))
+		return (ft_strdup(""));
+	j = 0;
+	while (j < len)
+		sub[j++] = s[start++];
+	sub[j] = '\0';
+	return (sub);
+}
