@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:43:57 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/28 16:40:46 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/09/28 17:57:05 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 
 void	_init_vars_(t_philo *philo)
 {
+	int	i;
+
+	i = 0;
+	while (i < 5)
+		philo->int_options[i++] = 0;
 	philo->options = NULL;
 	philo->nbr_ps = 0;
 	philo->t_eat = 0;
@@ -75,42 +80,51 @@ int		_atoi_kai_(t_philo *philo, char *str)
 		i++;
 	else if (str[i] == '-')
 	{
-		i++;
-		sign = -1;
+		philo->error = 1;
+		return (0);
 	}
-	slen = ft_strlen(str);
-	printf("slen = |%lu|\n", slen);
-	slen = slen - _count_zeros_(str);
-	printf("slen = |%lu|\n", slen);
+	slen = ft_strlen(str) - _count_zeros_(str);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		a = (a * 10) + str[i] - 48;
 		i++;
 	}
-	printf("strlen = |%lu|, nbrlen = |%lu| nbr = --|%lu|--\n", slen, _nbrlen_(a), a);
-	if (slen != _nbrlen_(a))
+	if (a > MAX_INT || slen != _nbrlen_(a))
 		philo->error = 1;
 	a = a * sign;
 	return (if_long(a, sign));
+}
+
+void	_set_vars_(t_philo *philo)
+{
+	philo->nbr_ps = philo->int_options[0];
+	philo->t_die = philo->int_options[1];
+	philo->t_eat = philo->int_options[2];
+	philo->t_sleep = philo->int_options[3];
+	if (philo->nbr_opt == 5)
+		philo->nbr_peat = philo->int_options[4];
 }
 
 void	_check_options_(t_philo *philo)
 {
 	int	i;
 	
-	// if (philo->nbr_opt != 4 && philo->nbr_opt != 5)
-	// {
-	// 	philo->error = 1;
-	// 	return ;
-	// }
+	if (philo->nbr_opt != 4 && philo->nbr_opt != 5)
+	{
+		philo->error = 1;
+		return ;
+	}
 	i = 0;
 	while (philo->options[++i])
 	{
-		philo->nbr_ps = _atoi_kai_(philo, ft_strtrim(philo->options[i], " \n\t\b\v\f\r"));
+		philo->int_options[i - 1] = _atoi_kai_(philo, ft_strtrim(philo->options[i], " \n\t\b\v\f\r"));
 		if (philo->error)
 			_error_();
-		printf("number = %d\n", philo->nbr_ps);
 	}
+	if (philo->int_options[0] > 200 || philo->int_options[1] < 60
+		|| philo->int_options[2] < 60 || philo->int_options[3] < 60)
+		_error_();
+	_set_vars_(philo);
 }
 
 
@@ -127,7 +141,6 @@ int main(int argc, char **argv)
 	if (!philo)
 		return (1);
 	_init_vars_(philo);
-	printf("the argc = %d\n", argc);
 	philo->options = argv;
 	philo->nbr_opt = argc - 1;
 	_check_options_(philo);
@@ -135,5 +148,4 @@ int main(int argc, char **argv)
 		_error_();
 	_start_program_(philo);
 	argc += 2;
-	printf("argv = %s", philo->options[1]);
 }
