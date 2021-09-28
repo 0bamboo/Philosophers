@@ -6,7 +6,7 @@
 #    By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/22 16:25:54 by abdait-m          #+#    #+#              #
-#    Updated: 2021/09/22 16:47:44 by abdait-m         ###   ########.fr        #
+#    Updated: 2021/09/28 15:21:19 by abdait-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT = ./libft
 
 LIBFT_LIB = $(LIBFT)/libft.a
 
-FILES = 
+FILES = ./srcs/philo.c
 
 HEADER = ./header/
 
