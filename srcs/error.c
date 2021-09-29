@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 16:43:57 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/29 14:54:29 by abdait-m         ###   ########.fr       */
+/*   Created: 2021/09/29 14:50:56 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/09/29 14:51:21 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-// ARGS :
-// number of philosophers
-// time to die
-// time to eat
-// time to sleep 
-// number of times each philo must eat
-
-int main(int argc, char **argv)
+void	_init_vars_(t_philo *philo, char ** argv, int argc)
 {
-	t_philo *philo;
+	int	i;
 
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-		return (1);
-	_init_vars_(philo, argv, argc);
-	_check_options_(philo);
-	if (philo->error)
-		_error_();
-	_start_program_(philo);
+	i = 0;
+	while (i < 5)
+		philo->int_options[i++] = 0;
+	philo->nbr_ps = 0;
+	philo->t_eat = 0;
+	philo->t_die = 0;
+	philo->t_sleep = 0;
+	philo->nbr_peat = 0;
+	philo->error = 0;
+	philo->nbr_z = 0;
+	philo->options = argv;
+	philo->nbr_opt = argc - 1;
+}
+
+void _error_()
+{
+	puts("\033[31m Error.\033[0m");
+	exit(0);
 }

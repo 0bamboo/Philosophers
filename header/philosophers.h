@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/28 17:44:16 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/09/29 14:54:47 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,8 @@ typedef struct s_philo
 	int			nbr_z;
 }				t_philo;
 
+void	_check_options_(t_philo *philo);
+void	_start_program_(t_philo *philo);
+void	_error_();
+void	_init_vars_(t_philo *philo, char ** argv, int argc);
 #endif
