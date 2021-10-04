@@ -8,7 +8,7 @@ int j;
 void *
 do_process()
 {
-    // pthread_mutex_lock(&lock);
+    pthread_mutex_lock(&lock);
     int i = 0;
 
     j++;
@@ -23,7 +23,7 @@ do_process()
 
     printf("...Done\n");
 
-    // pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock);
 	return NULL;
 }
 
@@ -43,7 +43,6 @@ main(void)
 
     pthread_create(&t1, NULL, &do_process, NULL);
     pthread_create(&t2, NULL, &do_process, NULL);
-
     pthread_join(t1, NULL);
     pthread_join(t2, NULL);
 
