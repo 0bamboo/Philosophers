@@ -1,25 +1,51 @@
-
+#include <unistd.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>  //Header file for sleep(). man 3 sleep for details.
 #include <pthread.h>
-  
-void *test_1()
+
+pthread_mutex_t lock;
+int j;
+
+void *
+do_process()
 {
-	printf("from thread 1\n");
+    // pthread_mutex_lock(&lock);
+    int i = 0;
+
+    j++;
+
+    while(i < 5)
+    {
+        printf("%d", j);
+        sleep(1);
+
+        i++;
+    }
+
+    printf("...Done\n");
+
+    // pthread_mutex_unlock(&lock);
+	return NULL;
 }
 
-void *test_2()
+int
+main(void)
 {
-	printf("from thread 2\n");
-}
+    int err;
+    pthread_t t1, t2;
 
-int main()
-{
-	pthread_t t1, t2;
-	pthread_create(&t2, NULL, &test_2, NULL);
-	pthread_create(&t1, NULL, &test_1, NULL);
-	pthread_join(t1, NULL);
-	pthread_join(t2, NULL);
-	return (0);
+    if (pthread_mutex_init(&lock, NULL) != 0)
+    {
+        printf("Mutex initialization failed.\n");
+        return 1;
+    }
+
+    j = 0;
+
+    pthread_create(&t1, NULL, &do_process, NULL);
+    pthread_create(&t2, NULL, &do_process, NULL);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    return 0;
 }
