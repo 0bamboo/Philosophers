@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:50:56 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/29 14:51:21 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/05 17:21:59 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	_init_vars_(t_philo *philo, char ** argv, int argc)
 	philo->t_sleep = 0;
 	philo->nbr_peat = 0;
 	philo->error = 0;
-	philo->nbr_z = 0;
 	philo->options = argv;
 	philo->nbr_opt = argc - 1;
 }

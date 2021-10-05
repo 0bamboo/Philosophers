@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/29 14:54:47 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/05 17:29:55 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,27 @@
 
 # define MAX_INT 2147483647
 
+typedef struct s_pdata
+{
+	int	name;
+	int	nbr_eatings;
+	int	l_fork;
+	int	r_fork;
+}				t_pdata;
+
 typedef struct s_philo
 {
-	char		**options;
-	int			int_options[5];
-	int			nbr_ps;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			nbr_peat;
-	int			error;
-	int			nbr_opt;
-	int			nbr_z;
+	char				**options;
+	int					int_options[5];
+	int					nbr_ps;
+	int					t_die;
+	int					t_eat;
+	int					t_sleep;
+	int					nbr_peat;
+	int					error;
+	int					nbr_opt;
+	t_pdata				*pdata;
+	pthread_mutex_t		*forks;
 }				t_philo;
 
 void	_check_options_(t_philo *philo);
