@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/05 17:29:55 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:02:33 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ typedef struct s_pdata
 	int	nbr_eatings;
 	int	l_fork;
 	int	r_fork;
+	t_philo *philo;
 }				t_pdata;
 
-typedef struct s_philo
+typedef struct	s_philo
 {
 	char				**options;
 	int					int_options[5];
@@ -41,6 +42,7 @@ typedef struct s_philo
 	int					nbr_peat;
 	int					error;
 	int					nbr_opt;
+	unsigned int 		start_time;
 	t_pdata				*pdata;
 	pthread_mutex_t		*forks;
 }				t_philo;
