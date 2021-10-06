@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/06 17:54:55 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/06 18:19:20 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 # include <pthread.h>
 # include <unistd.h>
 # include "../libft/libft.h"

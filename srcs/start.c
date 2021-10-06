@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:54:13 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/06 18:00:23 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/06 18:26:21 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void _init_each_philo_(t_pdata *pd, int i)
 	pd->name = i;
 	pd->nbr_eatings = 0;
 	pd->l_fork = i;
-	pd->r_fork = (i + 1) % pdata->philo->nbr_ps;
+	pd->r_fork = (i + 1) % pd->philo->nbr_ps;
 }
 
 void	_init_philos_(t_philo *philo)
@@ -33,9 +33,9 @@ void	_init_philos_(t_philo *philo)
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
-		pthread_mutex_init(&philo->forks[i]);
+		pthread_mutex_init(&philo->forks[i], NULL);
 		philo->pdata[i].philo = philo;
-		_init_each_philo_(&philo->pdata[i]);
+		_init_each_philo_(&philo->pdata[i], i);
 	}
 }
 
@@ -51,11 +51,12 @@ unsigned int	_get_time_(unsigned int start)
 
 void	_eating_(t_pdata *dt)
 {
+	// you need infinite loop here
 	pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
 	//print the time each time 
-	printf("%d\thas taken a fork", dt->name);
+	printf("%d\t has taken a fork", dt->name);
 	pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
-	printf("%d\thas taken a fork", dt->name);
+	printf("%d\t has taken a fork", dt->name);
 	
 	printf("%d\t is eating", dt->name);
 	usleep(dt->philo->t_eat * 1000);
@@ -77,7 +78,7 @@ void	_thinking_(t_pdata *dt)
 
 void	_death_(t_pdata *dt)
 {
-	
+	dt->name = 3;
 }
 
 void	*_tasks_(void *data)
@@ -85,10 +86,11 @@ void	*_tasks_(void *data)
 	t_pdata *dt;
 	
 	dt = (t_pdata *)data;
-	_eating_(&dt);
-	_sleeping_(&dt);
-	_thinking_(&dt);
-	
+	_eating_(dt);
+	_sleeping_(dt);
+	_thinking_(dt);
+	_death_(dt);
+	return NULL;
 }
 
 void _start_program_(t_philo *philo)
@@ -100,7 +102,7 @@ void _start_program_(t_philo *philo)
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
-		pthread_create(&th, NULL, &_tasks_, (void *)philo->pdata[i]);
+		pthread_create(&th, NULL, &_tasks_, (void *)&philo->pdata[i]);
 		pthread_detach(th);
 	}
 }
