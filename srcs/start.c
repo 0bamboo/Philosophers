@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:54:13 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/06 18:26:21 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/06 19:09:18 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,12 @@ void	_eating_(t_pdata *dt)
 	// you need infinite loop here
 	pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
 	//print the time each time 
-	printf("%d\t has taken a fork", dt->name);
+	printf("%d\t has taken a fork\n", dt->name);
 	pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
-	printf("%d\t has taken a fork", dt->name);
+	printf("%d\t has taken a fork\n", dt->name);
 	
-	printf("%d\t is eating", dt->name);
+	printf("%d\t is eating\n", dt->name);
+	dt->limit = _get_time_(dt->philo->start_time) + dt->philo->t_die;
 	usleep(dt->philo->t_eat * 1000);
 	dt->nbr_eatings++;
 	pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
@@ -76,21 +77,39 @@ void	_thinking_(t_pdata *dt)
 	printf("%d is thinking\n", dt->name);
 }
 
-void	_death_(t_pdata *dt)
+void	*_death_(void *data)
 {
-	dt->name = 3;
+	t_pdata *dt;
+	
+	dt = (t_pdata *)data;
+	while(1)
+	{
+		if (dt->limit < _get_time_(dt->philo->start_time))
+		{
+			printf("%d\t died\n", dt->name);
+			break;
+		}
+	}
+	return (NULL);
 }
 
 void	*_tasks_(void *data)
 {
 	t_pdata *dt;
+	p_thread th;
 	
 	dt = (t_pdata *)data;
-	_eating_(dt);
-	_sleeping_(dt);
-	_thinking_(dt);
-	_death_(dt);
-	return NULL;
+	dt->limit = _get_time_(dt->philo->start_time) + dt->philo->t_die;
+	pthread_create(&th, NULL, &_death_, data);
+	pthread_detach(th);
+	while (1)
+	{
+		_eating_(dt);
+		_sleeping_(dt);
+		_thinking_(dt);
+		_death_(dt);
+	}
+	return (NULL);
 }
 
 void _start_program_(t_philo *philo)

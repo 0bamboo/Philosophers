@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/06 18:19:20 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/06 18:52:21 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_pdata
 	int	nbr_eatings;
 	int	l_fork;
 	int	r_fork;
+	unsigned int	limit;
 	struct s_philo *philo;
 }				t_pdata;
 
