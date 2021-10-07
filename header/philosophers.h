@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/07 16:11:42 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:15:21 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void			_eating_(t_pdata *dt);
 void			_sleeping_(t_pdata *dt);
 void			_thinking_(t_pdata *dt);
 void			*_death_checker_(void *data);
+void			*_eat_checker_(void *data);
 void			_death_of_ph_(t_pdata *dt);
 void			*_tasks_(void *data);
 void			_end_of_simulation_(t_pdata *dt);

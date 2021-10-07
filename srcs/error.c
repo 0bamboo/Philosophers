@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:50:56 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/07 16:09:20 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:47:01 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	_init_vars_(t_philo *philo, char ** argv, int argc)
 	int	i;
 
 	i = 0;
-	philo->start_time = _get_time_(0);
+	philo->start_time = _get_time_(0U);
 	while (i < 5)
 		philo->int_options[i++] = 0;
 	philo->nbr_ps = 0;

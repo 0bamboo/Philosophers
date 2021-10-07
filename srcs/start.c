@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:54:13 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/07 16:09:48 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/07 18:01:44 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,17 @@ void	*_eat_checker_(void *data)
 	t_pdata	*dt;
 
 	dt = (t_pdata *)data;
-	while (dt->philo->end_sim)
+	while (1)
 	{
+		
 		if (dt->philo->nbr_ps == dt->philo->nbr_philos_meat)
+		{
 			_print_(dt, END);
+			break;
+		}
+		usleep(50);
+
+		// puts("im in");
 	}
 	return (data);
 }
@@ -88,9 +95,9 @@ void _start_program_(t_philo *philo)
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
-		// puts("im in");
 		pthread_create(&th, NULL, &_tasks_, (void *)&philo->pdata[i]);
 		pthread_detach(th);
+		usleep(50);
 	}
 	pthread_mutex_lock(&philo->p_hold);
 	pthread_mutex_lock(&philo->p_hold);
