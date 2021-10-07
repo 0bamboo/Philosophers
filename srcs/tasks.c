@@ -1,67 +1,105 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tasks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/07 14:59:19 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/10/07 14:59:19 by abdait-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-void	_eating_(t_pdata *dt)
+void _print_(t_pdata *dt, int task)
 {
-	//print the time each time 
+	pthread_mutex_lock(&dt->philo->print);
+	if (task == EAT)
+		_eating_(dt);
+	else if (task == SLEEP)
+		_sleeping_(dt);
+	else if (task == THINK)
+		_thinking_(dt);
+	else if (task == DEATH)
+		_death_of_ph_(dt);
+	else if (task == END)
+		_end_of_simulation_(dt);
+	pthread_mutex_unlock(&dt->philo->print);
+}
+
+void _eating_(t_pdata *dt)
+{
+	//print the time each time
 	pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
-	printf("%d\t has taken a fork\n", dt->name);
+	printf("%u\t%d\t has taken a fork\n", _get_time_(dt->philo->start_time), dt->name + 1);
 	pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
-	printf("%d\t has taken a fork\n", dt->name);
-	printf("%d\t is eating\n", dt->name);
-	dt->limit = _get_time_(0) + dt->philo->t_die;
+	printf("%u\t%d\t has taken a fork\n", _get_time_(dt->philo->start_time), dt->name + 1);
+	printf("%u\t%d\t is eating\n", _get_time_(dt->philo->start_time), dt->name + 1);
+	dt->limit = _get_time_(0U) + dt->philo->t_die;
 	usleep(dt->philo->t_eat * 1000);
 	dt->nbr_eatings++;
 	pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
 	pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
 }
 
-void	_sleeping_(t_pdata *dt)
+void _sleeping_(t_pdata *dt)
 {
-	printf("%d is sleeping\n", dt->name);
+	printf("%u\t%d\t is sleeping\n", _get_time_(dt->philo->start_time), dt->name + 1);
 	usleep(dt->philo->t_sleep * 1000);
 }
 
-void	_thinking_(t_pdata *dt)
+void _thinking_(t_pdata *dt)
 {
-	printf("%d is thinking\n", dt->name);
+	printf("%u\t%d\t is thinking\n", _get_time_(dt->philo->start_time), dt->name + 1);
 }
 
-void	*_death_(void *data)
+void	_death_of_ph_(t_pdata *dt)
+{
+	printf("%u\t%d\t died\n", _get_time_(dt->philo->start_time), dt->name + 1);
+	dt->philo->is_alive = 0;
+	pthread_mutex_unlock(&dt->philo->p_hold);
+}
+
+void	_end_of_simulation_(t_pdata *dt)
+{
+	printf("%u\t End of simulation .\n", _get_time_(dt->philo->start_time));
+	pthread_mutex_unlock(&dt->philo->p_hold);
+}
+
+void *_death_checker_(void *data)
 {
 	t_pdata *dt;
-	
+
 	dt = (t_pdata *)data;
-	while(1)
+	while (1)
 	{
-		// printf("dt->limit = |%u|===|%u|\n", dt->limit, _get_time_(dt->philo->start_time));
 		if (dt->limit < _get_time_(dt->philo->start_time))
 		{
-			printf("%d\t died\n", dt->name);
-			dt->philo->is_alive = 0;
+			_print_(dt, DEATH);
 			break;
 		}
 	}
-	return (NULL);
+	return (data);
 }
 
-void	*_tasks_(void *data)
+void *_tasks_(void *data)
 {
-	t_pdata		*dt;
-	pthread_t	th;
-	
+	t_pdata *dt;
+
 	dt = (t_pdata *)data;
-	dt->limit = _get_time_(0) + dt->philo->t_die;
-	// printf("dtlimit = -----|%u|-----\n", dt->philo->start_time);
-	pthread_create(&th, NULL, &_death_, data);
-	pthread_detach(th);
-	// printf("---{%d}\n", dt->philo->is_alive);
+	dt->limit = _get_time_(dt->philo->start_time) + dt->philo->t_die;
+	pthread_create(&dt->philo->death_checker, NULL, &_death_checker_, data);
+	pthread_detach(dt->philo->death_checker);
 	while (dt->philo->is_alive)
 	{
-		_eating_(dt);
-		_sleeping_(dt);
-		_thinking_(dt);
-		// _death_(dt);
+		_print_(dt, EAT);
+		_print_(dt, SLEEP);
+		_print_(dt, THINK);
+		if (dt->nbr_eatings == dt->philo->nbr_peat)
+		{
+			dt->philo->nbr_philos_meat++;
+		}
 	}
 	return (NULL);
 }

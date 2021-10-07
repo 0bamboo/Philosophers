@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:50:56 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/06 15:09:54 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:09:20 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	_init_vars_(t_philo *philo, char ** argv, int argc)
 	philo->nbr_peat = 0;
 	philo->error = 0;
 	philo->is_alive = 1;
+	philo->nbr_philos_meat = 0;
+	philo->end_sim = 1;
 	philo->options = argv;
 	philo->nbr_opt = argc - 1;
 }
