@@ -14,9 +14,11 @@
 
 void _print_(t_pdata *dt, int task)
 {
-	// pthread_mutex_lock(&dt->philo->print);
-	// if (task == EAT)
-	// 	_eating_(dt);
+	pthread_mutex_lock(&dt->philo->print);
+	if (task == FORK)
+		printf("%u\t%d\t has taken a fork\n", _get_time_(dt->philo->start_time), dt->name + 1);
+	if (task == EAT)
+		printf("%u\t%d\t is eating\n", _get_time_(dt->philo->start_time), dt->name + 1);
 	if (task == DEATH)
 		_death_of_ph_(dt);
 	else if (task == END)
@@ -25,29 +27,27 @@ void _print_(t_pdata *dt, int task)
 	// 	_sleeping_(dt);
 	// else if (task == THINK)
 	// 	_thinking_(dt);
-	// pthread_mutex_unlock(&dt->philo->print);
+	pthread_mutex_unlock(&dt->philo->print);
 }
 
 void _eating_(t_pdata *dt)
 {
-			pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
+	pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
 
-		pthread_mutex_lock(&dt->philo->print);
-		printf("%u\t%d\t has taken a fork\n", _get_time_(dt->philo->start_time), dt->name + 1);
-		pthread_mutex_unlock(&dt->philo->print);
+	_print_(dt, FORK);
 
-		pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
+	pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
 
-		pthread_mutex_lock(&dt->philo->print);
-		printf("%u\t%d\t has taken a fork\n", _get_time_(dt->philo->start_time), dt->name + 1);
-		printf("%u\t%d\t is eating\n", _get_time_(dt->philo->start_time), dt->name + 1);
-		pthread_mutex_unlock(&dt->philo->print);
+	pthread_mutex_lock(&dt->philo->print);
+	printf("%u\t%d\t has taken a fork\n", _get_time_(dt->philo->start_time), dt->name + 1);
+	_print_(dt, EAT);
+	pthread_mutex_unlock(&dt->philo->print);
 
-		dt->limit = _get_time_(0U) + dt->philo->t_die;
-		usleep(dt->philo->t_eat * 1000);
-		dt->nbr_eatings++;
-		pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
-		pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
+	dt->limit = _get_time_(0U) + dt->philo->t_die;
+	usleep(dt->philo->t_eat * 1000);
+	dt->nbr_eatings++;
+	pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
+	pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
 }
 
 // void _sleeping_(t_pdata *dt)
@@ -62,10 +62,8 @@ void _death_of_ph_(t_pdata *dt)
 {
 	pthread_mutex_lock(&dt->philo->print);
 	printf("%u\t%d\t died\n", _get_time_(dt->philo->start_time), dt->name + 1);
-	pthread_mutex_unlock(&dt->philo->print);
 	dt->philo->is_alive = 0;
 	pthread_mutex_unlock(&dt->philo->p_hold);
-	pthread_mutex_lock(&dt->philo->print);
 }
 
 void _end_of_simulation_(t_pdata *dt)
@@ -124,11 +122,11 @@ void *_tasks_(void *data)
 		pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
 		pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
 		// _print_(dt, EAT);
-		
+
 		pthread_mutex_lock(&dt->philo->print);
 		printf("%u\t%d\t is sleeping\n", _get_time_(dt->philo->start_time), dt->name + 1);
 		pthread_mutex_unlock(&dt->philo->print);
-		
+
 		usleep(dt->philo->t_sleep * 1000);
 
 		pthread_mutex_lock(&dt->philo->print);

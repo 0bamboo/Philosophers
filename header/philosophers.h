@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/07 17:15:21 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/07 18:50:04 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "../libft/libft.h"
 
 # define MAX_INT 2147483647
+# define FORK 4
 # define EAT 5
 # define SLEEP 6
 # define THINK 7
