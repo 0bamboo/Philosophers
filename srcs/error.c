@@ -26,6 +26,7 @@ void	_init_vars_(t_philo *philo, char ** argv, int argc)
 	philo->t_sleep = 0;
 	philo->nbr_peat = 0;
 	philo->error = 0;
+	philo->is_alive = 1;
 	philo->options = argv;
 	philo->nbr_opt = argc - 1;
 }

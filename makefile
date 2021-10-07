@@ -20,7 +20,7 @@ LIBFT = ./libft
 
 LIBFT_LIB = $(LIBFT)/libft.a
 
-FILES = ./srcs/parse.c ./srcs/error.c ./srcs/start.c
+FILES = ./srcs/parse.c ./srcs/error.c ./srcs/start.c ./srcs/tasks.c
 
 HEADER = ./header/philosophers.h
 

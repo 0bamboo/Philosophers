@@ -42,12 +42,15 @@ typedef struct	s_philo
 	int					t_die;
 	int					t_eat;
 	int					t_sleep;
+	int					is_alive;
 	int					nbr_peat;
 	int					error;
 	int					nbr_opt;
 	unsigned int 		start_time;
 	t_pdata				*pdata;
 	pthread_mutex_t		*forks;
+	pthread_t			eat_checker;
+	pthread_t			dying_checker;
 }				t_philo;
 
 void			_check_options_(t_philo *philo);
@@ -59,7 +62,7 @@ unsigned int	_get_time_(unsigned int start);
 void			_eating_(t_pdata *dt);
 void			_sleeping_(t_pdata *dt);
 void			_thinking_(t_pdata *dt);
-void			_death_(t_pdata *dt);
+void			*_death_(void *data);
 void			*_tasks_(void *data);
 void			_init_vars_(t_philo *philo, char ** argv, int argc);
 #endif

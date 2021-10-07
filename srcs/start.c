@@ -12,12 +12,23 @@
 
 #include "../header/philosophers.h"
 
+unsigned int	_get_time_(unsigned int start)
+{
+	struct timeval	time;
+	unsigned int	ret;
+	
+	gettimeofday(&time, NULL);
+	ret = (time.tv_usec / 1000) + (time.tv_sec * 1000) - start;
+	return (ret);
+}
+
 void _init_each_philo_(t_pdata *pd, int i)
 {
 	pd->name = i;
 	pd->nbr_eatings = 0;
 	pd->l_fork = i;
 	pd->r_fork = (i + 1) % pd->philo->nbr_ps;
+	pd->limit = 0;
 }
 
 void	_init_philos_(t_philo *philo)
@@ -39,88 +50,17 @@ void	_init_philos_(t_philo *philo)
 	}
 }
 
-unsigned int	_get_time_(unsigned int start)
-{
-	struct timeval time;
-	unsigned int	ret;
-	
-	gettimeofday(&time, NULL);
-	ret = (time.tv_usec / 1000) + (time.tv_sec * 1000) - start;
-	return (ret);
-}
-
-void	_eating_(t_pdata *dt)
-{
-	// you need infinite loop here
-	pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
-	//print the time each time 
-	printf("%d\t has taken a fork\n", dt->name);
-	pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
-	printf("%d\t has taken a fork\n", dt->name);
-	
-	printf("%d\t is eating\n", dt->name);
-	dt->limit = _get_time_(dt->philo->start_time) + dt->philo->t_die;
-	usleep(dt->philo->t_eat * 1000);
-	dt->nbr_eatings++;
-	pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
-	pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
-}
-
-void	_sleeping_(t_pdata *dt)
-{
-	printf("%d is sleeping\n", dt->name);
-	usleep(dt->philo->t_sleep * 1000);
-}
-
-void	_thinking_(t_pdata *dt)
-{
-	printf("%d is thinking\n", dt->name);
-}
-
-void	*_death_(void *data)
-{
-	t_pdata *dt;
-	
-	dt = (t_pdata *)data;
-	while(1)
-	{
-		if (dt->limit < _get_time_(dt->philo->start_time))
-		{
-			printf("%d\t died\n", dt->name);
-			break;
-		}
-	}
-	return (NULL);
-}
-
-void	*_tasks_(void *data)
-{
-	t_pdata *dt;
-	p_thread th;
-	
-	dt = (t_pdata *)data;
-	dt->limit = _get_time_(dt->philo->start_time) + dt->philo->t_die;
-	pthread_create(&th, NULL, &_death_, data);
-	pthread_detach(th);
-	while (1)
-	{
-		_eating_(dt);
-		_sleeping_(dt);
-		_thinking_(dt);
-		_death_(dt);
-	}
-	return (NULL);
-}
 
 void _start_program_(t_philo *philo)
 {
-	int		i;
-	pthread_t  th;
+	int			i;
+	pthread_t	th;
 
 	_init_philos_(philo);
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
+		// puts("im in");
 		pthread_create(&th, NULL, &_tasks_, (void *)&philo->pdata[i]);
 		pthread_detach(th);
 	}
