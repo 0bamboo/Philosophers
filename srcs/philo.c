@@ -6,22 +6,15 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:43:57 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/09/29 14:54:29 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/08 17:44:03 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-// ARGS :
-// number of philosophers
-// time to die
-// time to eat
-// time to sleep 
-// number of times each philo must eat
-
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = malloc(sizeof(t_philo));
 	if (!philo)
@@ -31,4 +24,5 @@ int main(int argc, char **argv)
 	if (philo->error)
 		_error_();
 	_start_program_(philo);
+	_clean_(philo);
 }

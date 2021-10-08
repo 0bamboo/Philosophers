@@ -6,13 +6,13 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:50:56 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/07 17:47:01 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/08 17:56:18 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-void	_init_vars_(t_philo *philo, char ** argv, int argc)
+void	_init_vars_(t_philo *philo, char **argv, int argc)
 {
 	int	i;
 
@@ -33,8 +33,30 @@ void	_init_vars_(t_philo *philo, char ** argv, int argc)
 	philo->nbr_opt = argc - 1;
 }
 
-void _error_()
+void	_error_(void)
 {
 	puts("\033[31m Error.\033[0m");
+	puts("\033[33m [ARG 1] : Number of philosophers. [max = 200]");
+	puts(" [ARG 2] : Time to die . [min = 60ms]");
+	puts(" [ARG 3] : Time to eat . [min = 60ms]");
+	puts(" [ARG 4] : Time to sleep . [min = 60ms]");
+	puts(" [ARG 5][optional] : Number of times\
+		each philosopher must eat .\033[0m");
 	exit(0);
+}
+
+void	_allocation_error_(void)
+{
+	puts("\033[31m Allocation Error .\033[0m");
+	exit(0);
+}
+
+void	_clean_(t_philo *ph)
+{
+	while (ph->nbr_ps--)
+		pthread_mutex_destroy(&ph->forks[ph->nbr_ps]);
+	free(ph->pdata);
+	pthread_mutex_destroy(&ph->print);
+	pthread_mutex_destroy(&ph->p_hold);
+	free(ph);
 }

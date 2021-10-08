@@ -6,13 +6,13 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:47:33 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/04 11:06:55 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/08 17:38:48 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 
-size_t		_nbrlen_(int nbr)
+size_t	_nbrlen_(int nbr)
 {
 	size_t	len;
 
@@ -25,18 +25,19 @@ size_t		_nbrlen_(int nbr)
 	return (len);
 }
 
-int		_count_zeros_(char *str)
+int	_count_zeros_(char *str)
 {
 	int	i;
 
 	i = -1;
 	if ((str[0] == '+' || str[0] == '-') && str[1])
 		i = 0;
-	while (str[++i] == '0');
+	while (str[++i] == '0')
+		;
 	return (i);
 }
 
-int		_atoi_kai_(t_philo *philo, char *str)
+int	_atoi_kai_(t_philo *philo, char *str)
 {
 	int		i;
 	long	a;
@@ -78,7 +79,7 @@ void	_set_vars_(t_philo *philo)
 void	_check_options_(t_philo *philo)
 {
 	int	i;
-	
+
 	if (philo->nbr_opt != 4 && philo->nbr_opt != 5)
 	{
 		philo->error = 1;
@@ -87,7 +88,8 @@ void	_check_options_(t_philo *philo)
 	i = 0;
 	while (philo->options[++i])
 	{
-		philo->int_options[i - 1] = _atoi_kai_(philo, ft_strtrim(philo->options[i], " \n\t\b\v\f\r"));
+		philo->int_options[i - 1] = _atoi_kai_(philo, \
+			ft_strtrim(philo->options[i], " \n\t\b\v\f\r"));
 		if (philo->error)
 			_error_();
 	}
