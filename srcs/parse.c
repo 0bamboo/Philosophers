@@ -88,6 +88,7 @@ void	_check_options_(t_philo *philo)
 	i = 0;
 	while (philo->options[++i])
 	{
+		// free the strtrim return ...
 		philo->int_options[i - 1] = _atoi_kai_(philo, \
 			ft_strtrim(philo->options[i], " \n\t\b\v\f\r"));
 		if (philo->error)
