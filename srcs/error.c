@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:50:56 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/08 17:56:18 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/09 15:28:30 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	_clean_(t_philo *ph)
 {
 	while (ph->nbr_ps--)
 		pthread_mutex_destroy(&ph->forks[ph->nbr_ps]);
+	free(ph->forks);
 	free(ph->pdata);
 	pthread_mutex_destroy(&ph->print);
 	pthread_mutex_destroy(&ph->p_hold);

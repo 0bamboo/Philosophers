@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:47:33 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/08 17:38:48 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/09 15:30:19 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	_atoi_kai_(t_philo *philo, char *str)
 	}
 	if (a > MAX_INT || slen != _nbrlen_(a))
 		philo->error = 1;
-	a = a * sign;
+	free(str);
 	return (if_long(a, sign));
 }
 
@@ -88,7 +88,6 @@ void	_check_options_(t_philo *philo)
 	i = 0;
 	while (philo->options[++i])
 	{
-		// free the strtrim return ...
 		philo->int_options[i - 1] = _atoi_kai_(philo, \
 			ft_strtrim(philo->options[i], " \n\t\b\v\f\r"));
 		if (philo->error)
