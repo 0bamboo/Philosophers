@@ -175,3 +175,4 @@ int	main(int argc, char **argv)
 	_clean_(philo);
 }//hahaha
 dd
+//ssss 
