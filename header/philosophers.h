@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <semaphore.h>
 # include <unistd.h>
 # include "../libft/libft.h"
 
