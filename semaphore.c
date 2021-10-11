@@ -174,3 +174,4 @@ int	main(int argc, char **argv)
 	_start_program_(philo);
 	_clean_(philo);
 }//hahaha
+dd
