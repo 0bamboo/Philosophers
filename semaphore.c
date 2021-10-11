@@ -173,4 +173,4 @@ int	main(int argc, char **argv)
 		_error_();
 	_start_program_(philo);
 	_clean_(philo);
-}
+}//hahaha
