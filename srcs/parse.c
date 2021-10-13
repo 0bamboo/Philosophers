@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:47:33 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/09 15:30:19 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/13 20:24:42 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,23 @@ void	_set_vars_(t_philo *philo)
 		philo->nbr_peat = philo->int_options[4];
 }
 
-void	_check_options_(t_philo *philo)
+int	_check_options_(t_philo *philo)
 {
 	int	i;
 
 	if (philo->nbr_opt != 4 && philo->nbr_opt != 5)
-	{
-		philo->error = 1;
-		return ;
-	}
+		return (1);
 	i = 0;
 	while (philo->options[++i])
 	{
 		philo->int_options[i - 1] = _atoi_kai_(philo, \
 			ft_strtrim(philo->options[i], " \n\t\b\v\f\r"));
 		if (philo->error)
-			_error_();
+			return (1);
 	}
-	if (philo->int_options[0] > 200 || philo->int_options[1] < 60
+	if (philo->int_options[0] < 1 || philo->int_options[0] > 200 || philo->int_options[1] < 60
 		|| philo->int_options[2] < 60 || philo->int_options[3] < 60)
-		_error_();
+		return (1);
 	_set_vars_(philo);
+	return (0);
 }

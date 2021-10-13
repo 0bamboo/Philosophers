@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:50:56 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/09 15:28:30 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/13 20:18:53 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	_init_vars_(t_philo *philo, char **argv, int argc)
 int	_error_(void)
 {
 	puts("\033[31m Error.\033[0m");
-	puts("\033[33m [ARG 1] : Number of philosophers. [max = 200]");
-	puts(" [ARG 2] : Time to die . [min = 60ms]");
-	puts(" [ARG 3] : Time to eat . [min = 60ms]");
-	puts(" [ARG 4] : Time to sleep . [min = 60ms]");
+	puts("\033[33m [ARG 1] : Number of philosophers. [1 < nbr_ph <= 200]");
+	puts(" [ARG 2] : Time to die . [ >= 60ms]");
+	puts(" [ARG 3] : Time to eat . [ >= 60ms]");
+	puts(" [ARG 4] : Time to sleep . [ >= 60ms]");
 	puts(" [ARG 5][optional] : Number of times\
 	each philosopher must eat . [ >= 0]\033[0m");
 	return (1);

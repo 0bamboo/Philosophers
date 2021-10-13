@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:43:57 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/08 17:44:03 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/13 20:24:25 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int	main(int argc, char **argv)
 	if (!philo)
 		return (1);
 	_init_vars_(philo, argv, argc);
-	_check_options_(philo);
-	if (philo->error)
+	if (_check_options_(philo))
 		return (_error_());
 	if (_start_program_(philo))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 16:21:31 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/08 17:56:36 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/13 20:23:54 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_philo
 
 void					_init_each_philo_sem_(t_pdata *pd, int i, int nbr_philos);
 int						_create_semaphore_(const char *sem_name, int val, sem_t **sem);
-void					_check_options_(t_philo *philo);
+int						_check_options_(t_philo *philo);
 int						_semaphores_(t_philo *phil);
 int						_start_program_(t_philo *philo);
 int						_error_(void);

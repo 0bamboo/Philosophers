@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sem_start.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/13 20:13:37 by abdait-m          #+#    #+#             */
+/*   Updated: 2021/10/13 20:13:37 by abdait-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../header/philosophers.h"
 
 int		_create_semaphore_(const char *sem_name, int val, sem_t **sem)
@@ -69,9 +81,9 @@ int	_init_philos_(t_philo *philo)
 		_init_each_philo_sem_(&philo->pdata[i], i, philo->nbr_ps);
 		philo->pdata[i].philo = philo;
 	}
-	pthread_create(&philo->eat_checker, NULL, \
-		&_eat_checker_, (void *)philo);
-	pthread_detach(philo->eat_checker);
+	// pthread_create(&philo->eat_checker, NULL, \
+	// 	&_eat_checker_, (void *)philo);
+	// pthread_detach(philo->eat_checker);
 	sem_wait(philo->p_hold_b);
 	return (0);
 }
@@ -86,7 +98,7 @@ int	_start_program_(t_philo *philo)
 	while (++i < philo->nbr_ps)
 	{
 		philo->pdata[i].pid = fork();
-		if (philo->pdata[i].pid == 0)
+		if (philo->pdata[i].pid > 0)
 		{
 			_tasks_(&philo->pdata[i]);
 			exit(0);
