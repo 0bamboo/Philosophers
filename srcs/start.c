@@ -21,14 +21,15 @@ void	_init_each_philo_(t_pdata *pd, int i)
 	pd->limit = 0U;
 }
 
-void	_allocation_(t_philo *ph)
+int	_allocation_(t_philo *ph)
 {
 	ph->pdata = malloc(sizeof(t_pdata) * ph->nbr_ps);
 	if (!ph->pdata)
-		_allocation_error_();
+		return (_allocation_error_());
 	ph->forks = malloc(sizeof(pthread_mutex_t) * ph->nbr_ps);
 	if (!ph->forks)
-		_allocation_error_();
+		return (_allocation_error_());
+	return (0);
 }
 
 void	*_eat_checker_(void *data)
@@ -51,11 +52,12 @@ void	*_eat_checker_(void *data)
 	return (data);
 }
 
-void	_init_philos_(t_philo *philo)
+int	_init_philos_(t_philo *philo)
 {
 	int		i;
 
-	_allocation_(philo);
+	if (_allocation_(philo))
+		return (1);
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
@@ -68,14 +70,16 @@ void	_init_philos_(t_philo *philo)
 	pthread_create(&philo->eat_checker, NULL, \
 		&_eat_checker_, (void *)philo->pdata);
 	pthread_detach(philo->eat_checker);
+	return (0);
 }
 
-void	_start_program_(t_philo *philo)
+int	_start_program_(t_philo *philo)
 {
 	int			i;
 	pthread_t	th;
 
-	_init_philos_(philo);
+	if (_init_philos_(philo))
+		return (1);
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
@@ -85,4 +89,5 @@ void	_start_program_(t_philo *philo)
 	}
 	pthread_mutex_lock(&philo->p_hold);
 	pthread_mutex_lock(&philo->p_hold);
+	return (0);
 }

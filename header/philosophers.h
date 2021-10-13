@@ -18,8 +18,11 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <signal.h>
 # include <semaphore.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <string.h>
 # include "../libft/libft.h"
 
 # define MAX_INT 2147483647
@@ -35,6 +38,8 @@ typedef struct s_pdata
 	int				l_fork;
 	int				r_fork;
 	unsigned int	limit;
+	sem_t			*ph;
+	pid_t			pid;
 	struct s_philo	*philo;
 }					t_pdata;
 
@@ -58,21 +63,28 @@ typedef struct s_philo
 	pthread_mutex_t		print;
 	pthread_mutex_t		p_hold;
 	pthread_t			eat_checker;
+	sem_t				*forks_b;
+	sem_t				*print_b;
+	sem_t				*p_hold_b;
+	sem_t				*eat_b;
 	pthread_t			death_checker;
 }	t_philo;
 
+void					_init_each_philo_sem_(t_pdata *pd, int i, int nbr_philos);
+int						_create_semaphore_(const char *sem_name, int val, sem_t **sem);
 void					_check_options_(t_philo *philo);
-void					_start_program_(t_philo *philo);
-void					_error_(void);
+int						_semaphores_(t_philo *phil);
+int						_start_program_(t_philo *philo);
+int						_error_(void);
 void					_print_(t_pdata *dt, int task);
 void					_init_each_philo_(t_pdata *pdata, int i);
-void					_init_philos_(t_philo *philo);
+int						_init_philos_(t_philo *philo);
 unsigned int			_get_time_(unsigned int start);
 void					*_death_checker_(void *data);
 void					*_eat_checker_(void *data);
 void					_death_of_ph_(t_pdata *dt);
 void					*_tasks_(void *data);
-void					_allocation_error_(void);
+int						_allocation_error_(void);
 void					_clean_(t_philo *ph);
 void					_init_vars_(t_philo *philo, char **argv, int argc);
 

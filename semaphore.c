@@ -13,7 +13,8 @@ unsigned int	_get_time_(unsigned int start)
 
 void	_print_(t_pdata *dt, int task)
 {
-	pthread_mutex_lock(&dt->philo->print);
+	// pthread_mutex_lock(&dt->philo->print);
+	sem_wait(dt->philo->print_b);
 	if (task == FORK)
 		printf("%u\t%d\t has taken a fork\n", \
 			_get_time_(dt->philo->start_time), dt->name + 1);
@@ -30,7 +31,8 @@ void	_print_(t_pdata *dt, int task)
 	else if (task == THINK)
 		printf("%u\t%d\t is thinking\n", \
 			_get_time_(dt->philo->start_time), dt->name + 1);
-	pthread_mutex_unlock(&dt->philo->print);
+	sem_post(dt->philo->print_b);
+	// pthread_mutex_unlock(&dt->philo->print);
 }
 
 void	*_death_checker_(void *data)
@@ -40,12 +42,15 @@ void	*_death_checker_(void *data)
 	dt = (t_pdata *)data;
 	while (1)
 	{
+		// i think u need to add sem_wait(ph)
 		if (dt->limit < _get_time_(0U))
 		{
-			pthread_mutex_lock(&dt->philo->print);
+			// pthread_mutex_lock(&dt->philo->print);
+			sem_wait(dt->philo->print_b);
 			printf("%u\t%d\t died\n", \
 				_get_time_(dt->philo->start_time), dt->name + 1);
-			pthread_mutex_unlock(&dt->philo->p_hold);
+			// pthread_mutex_unlock(&dt->philo->p_hold);
+			sem_post(dt->philo->p_hold_b);
 			dt->philo->is_alive = 0;
 			break ;
 		}
@@ -64,15 +69,19 @@ void	*_tasks_(void *data)
 	pthread_detach(dt->philo->death_checker);
 	while (dt->philo->is_alive)
 	{
-		pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
+		// pthread_mutex_lock(&dt->philo->forks[dt->l_fork]);
+		sem_wait(dt->philo->forks);
 		_print_(dt, FORK);
-		pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
+		// pthread_mutex_lock(&dt->philo->forks[dt->r_fork]);
+		sem_wait(dt->philo->forks);
 		_print_(dt, EAT);
 		dt->limit = _get_time_(0U) + dt->philo->t_die;
 		usleep(dt->philo->t_eat * 1000);
 		dt->nbr_eatings++;
-		pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
-		pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
+		sem_post(dt->philo->forks);
+		sem_post(dt->philo->forks);
+		// pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
+		// pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
 		_print_(dt, SLEEP);
 		usleep(dt->philo->t_sleep * 1000);
 		_print_(dt, THINK);
@@ -91,16 +100,45 @@ void	_init_each_philo_(t_pdata *pd, int i)
 	pd->l_fork = i;
 	pd->r_fork = (i + 1) % pd->philo->nbr_ps;
 	pd->limit = 0U;
+	sem_unlink("ph");
+	pd->ph = sem_open("ph", O_CREAT | O_EXCL, 700, 1);
 }
 
-void	_allocation_(t_philo *ph)
+int		_create_semaphore_(const char *sem_name, int val, sem_t **sem)
+{
+	sem_unlink(sem_name);
+	*sem = sem_open(sem_name, O_CREAT, O_EXCL, 700, val);
+	if (*sem == SEM_FAILED)
+	{
+		printf("%s semphore error\n", sem_name);
+		return (1);
+	}
+	return (0);
+}
+
+int		_semaphores_(t_philo *phil)
+{
+	if (_create_semaphore("forks_b", philo->nbr_ps, &philo->forks_b) ||\
+		_create_semaphore("print_b", 1, &philo->print_b) ||\
+		_create_semaphore("p_hold_b", 1, &philo->p_hold_b) ||\
+		_create_semaphore("eat_b", 1, &philo->eat_b))
+			return (1);
+	return (0);
+}
+
+int		_allocation_(t_philo *ph)
 {
 	ph->pdata = malloc(sizeof(t_pdata) * ph->nbr_ps);
 	if (!ph->pdata)
+	{
 		_allocation_error_();
-	ph->forks = malloc(sizeof(pthread_mutex_t) * ph->nbr_ps);
-	if (!ph->forks)
-		_allocation_error_();
+		return (1);
+	}
+	return (0);
+	// allocation forks for bonus
+	// ph->forks_b = malloc(sizeof(sem_t) * ph->nbr_ps);
+	// if (!ph->forks_b)
+	// 	_allocation_error_();
 }
 
 void	*_eat_checker_(void *data)
@@ -110,12 +148,16 @@ void	*_eat_checker_(void *data)
 	dt = (t_pdata *)data;
 	while (1)
 	{
+		// sem wait print
 		if (dt->philo->nbr_ps == dt->philo->nbr_philos_meat)
 		{
-			pthread_mutex_lock(&dt->philo->print);
+			// pthread_mutex_lock(&dt->philo->print);
+			// sem_wait(dt->philo->eat_b);
+			sem_wait(dt->philo->print_b);
 			printf("%u\t End of simulation .\n", \
 				_get_time_(dt->philo->start_time));
-			pthread_mutex_unlock(&dt->philo->p_hold);
+			// pthread_mutex_unlock(&dt->philo->p_hold);
+			sem_post(dt->philo->print_b);
 			break ;
 		}
 		usleep(50);
@@ -123,40 +165,52 @@ void	*_eat_checker_(void *data)
 	return (data);
 }
 
-void	_init_philos_(t_philo *philo)
+int	_init_philos_(t_philo *philo)
 {
 	int		i;
 
-	_allocation_(philo);
+	if (_allocation_(philo) || _semaphores_(phi))
+		return (1);
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
-		pthread_mutex_init(&philo->forks[i], NULL);
-		philo->pdata[i].philo = philo;
+		// pthread_mutex_init(&philo->forks[i], NULL);
 		_init_each_philo_(&philo->pdata[i], i);
+		philo->pdata[i].philo = philo;
 	}
-	pthread_mutex_init(&philo->p_hold, NULL);
-	pthread_mutex_init(&philo->print, NULL);
+	// pthread_mutex_init(&philo->p_hold, NULL);
+	// pthread_mutex_init(&philo->print, NULL);
 	pthread_create(&philo->eat_checker, NULL, \
 		&_eat_checker_, (void *)philo->pdata);
 	pthread_detach(philo->eat_checker);
+	sem_wait(philo->sem_p_hold_p);
 }
 
-void	_start_program_(t_philo *philo)
+int	_start_program_(t_philo *philo)
 {
 	int			i;
-	pthread_t	th;
 
 	_init_philos_(philo);
 	i = -1;
 	while (++i < philo->nbr_ps)
 	{
-		pthread_create(&th, NULL, &_tasks_, (void *)&philo->pdata[i]);
-		pthread_detach(th);
-		usleep(50);
+		philo->pdata[i].pid = fork();
+		if (philo->pdata[i].pid == 0)
+		{
+			_tasks(philo);
+			exit(0);
+		}
+		else if (philo->pdata[i].pid == -1)
+			return (2);
+		// pthread_create(&th, NULL, &_tasks_, (void *)&philo->pdata[i]);
+		// pthread_detach(th);
+		// usleep(50);
 	}
-	pthread_mutex_lock(&philo->p_hold);
-	pthread_mutex_lock(&philo->p_hold);
+	sem_wait(philo->p_hold_b);
+	sem_post(philo->p_hold_b);
+	return (0);
+	// pthread_mutex_lock(&philo->p_hold);
+	// pthread_mutex_lock(&philo->p_hold);
 }
 //-------------------------------
 

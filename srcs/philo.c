@@ -22,7 +22,9 @@ int	main(int argc, char **argv)
 	_init_vars_(philo, argv, argc);
 	_check_options_(philo);
 	if (philo->error)
-		_error_();
-	_start_program_(philo);
+		return (_error_());
+	if (_start_program_(philo))
+		return (1);
 	_clean_(philo);
+	return (0);
 }
