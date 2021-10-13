@@ -6,13 +6,13 @@
 #    By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/22 16:25:54 by abdait-m          #+#    #+#              #
-#    Updated: 2021/09/29 14:59:26 by abdait-m         ###   ########.fr        #
+#    Updated: 2021/10/13 20:59:03 by abdait-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-NAME_SEM = sem_philo
+NAME_SEM = philo_bonus
 
 LIB = philo.a
 
@@ -54,7 +54,7 @@ $(NAME_SEM): $(LIBFT_FILES) $(OBJECT_SEM) $(HEADER) $(MAIN_SEM) $(FILES_SEM)
 			@make -C $(LIBFT)
 			@ar -rcs $(LIB_SEM) $(OBJECT_SEM)
 			@gcc  $(FLAGS) $(MAIN_SEM) $(LIB_SEM) $(LIBFT_LIB) -o $(NAME_SEM)
-			@echo "\n\033[35m Sem_Philo's program is created .\033[0m\n"
+			@echo "\n\033[35m Philo_bonus's program is created .\033[0m\n"
 					
 
 %.o:%.c $(HEADER)

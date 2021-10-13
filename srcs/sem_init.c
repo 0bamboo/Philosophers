@@ -19,6 +19,7 @@ void	_clean_(t_philo *philo)
 	i = 0;
 	while (i < (unsigned int)philo->nbr_ps)
 	{
+		puts("killed");
 		kill(philo->pdata[i].pid, SIGTERM);
 		i++;
 	}
@@ -52,13 +53,13 @@ void	_init_vars_(t_philo *philo, char **argv, int argc)
 
 int	_error_(void)
 {
-	puts("\033[31m Error.\033[0m");
-	puts("\033[33m [ARG 1] : Number of philosophers. [max = 200]");
-	puts(" [ARG 2] : Time to die . [min = 60ms]");
-	puts(" [ARG 3] : Time to eat . [min = 60ms]");
-	puts(" [ARG 4] : Time to sleep . [min = 60ms]");
-	puts(" [ARG 5][optional] : Number of times\
-	each philosopher must eat . [ >= 0]\033[0m");
+	printf("\033[31m Error.\033[0m\n");
+	printf("\033[33m [ARG 1] : Number of philosophers. ]\n");
+	printf(" [ARG 2] : Time to die \n");
+	printf(" [ARG 3] : Time to eat .\n");
+	printf(" [ARG 4] : Time to sleep .\n");
+	printf(" [ARG 5][optional] : Number of times\
+	each philosopher must eat .\033[0m\n");
 	return (1);
 }
 

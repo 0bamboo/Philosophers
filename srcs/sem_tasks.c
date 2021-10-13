@@ -53,7 +53,7 @@ void	*_death_checker_(void *data)
 	dt = (t_pdata *)data;
 	while (1)
 	{
-		sem_wait(dt->ph);
+		// sem_wait(dt->ph);
 		if (dt->limit < _get_time_(0U))
 		{
 			sem_wait(dt->philo->print_b);
@@ -80,7 +80,10 @@ void	*_tasks_(void *data)
 	pthread_detach(dt->philo->death_checker);
 	while (dt->philo->is_alive)
 	{
-		sem_wait(dt->ph);
+		// sem_wait(dt->philo->print_b);
+		// printf("alive = |%d|\n", dt->philo->is_alive);
+		// sem_post(dt->philo->print_b);
+		// sem_wait(dt->ph);
 		sem_wait(dt->philo->forks_b);
 		_print_(dt, FORK);
 		sem_wait(dt->philo->forks_b);
@@ -88,7 +91,7 @@ void	*_tasks_(void *data)
 		dt->limit = _get_time_(0U) + dt->philo->t_die;
 		usleep(dt->philo->t_eat * 1000);
 		dt->nbr_eatings++;
-		sem_post(dt->ph);
+		// sem_post(dt->ph);
 		sem_post(dt->philo->forks_b);
 		sem_post(dt->philo->forks_b);
 		_print_(dt, SLEEP);

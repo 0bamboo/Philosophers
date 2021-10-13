@@ -20,8 +20,7 @@ int	main(int argc, char **argv)
 	if (!philo)
 		return (1);
 	_init_vars_(philo, argv, argc);
-	_check_options_(philo);
-	if (philo->error)
+	if (_check_options_(philo))
 		return (_error_());
 	if (_start_program_(philo))
 		return (1);
