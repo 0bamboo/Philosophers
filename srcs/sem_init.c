@@ -52,9 +52,10 @@ void	_init_vars_(t_philo *philo, char **argv, int argc)
 
 int	_error_(void)
 {
-	printf("\033[31m Error.\033[0m\n");
-	printf("\033[33m [ARG 1] : Number of philosophers. ]\n");
-	printf(" [ARG 2] : Time to die \n");
+	printf("\033[31mError.\033[0m\n");
+	printf("\033[33mUSAGE : \n");
+	printf(" [ARG 1] : Number of philosophers.\n");
+	printf(" [ARG 2] : Time to die .\n");
 	printf(" [ARG 3] : Time to eat .\n");
 	printf(" [ARG 4] : Time to sleep .\n");
 	printf(" [ARG 5][optional] : Number of times\

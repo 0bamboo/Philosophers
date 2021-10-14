@@ -12,62 +12,65 @@
 
 #include "../header/philosophers.h"
 
-unsigned int	_get_time_(unsigned int start)
+unsigned int _get_time_(unsigned int start)
 {
-	struct timeval	time;
-	unsigned int	ret;
+	struct timeval time;
+	unsigned int ret;
 
 	gettimeofday(&time, NULL);
 	ret = (time.tv_usec / 1000) + (time.tv_sec * 1000) - start;
 	return (ret);
 }
 
-void	_print_(t_pdata *dt, int task)
+void _print_(t_pdata *dt, int task)
 {
 	pthread_mutex_lock(&dt->philo->print);
 	if (task == FORK)
-		printf("%u\t%d\t has taken a fork\n", \
-			_get_time_(dt->philo->start_time), dt->name + 1);
+		printf("%u\t%d\t has taken a fork\n",
+			   _get_time_(dt->philo->start_time), dt->name + 1);
 	else if (task == EAT)
 	{
-		printf("%u\t%d\t has taken a fork\n", \
-			_get_time_(dt->philo->start_time), dt->name + 1);
-		printf("%u\t%d\t is eating\n", \
-			_get_time_(dt->philo->start_time), dt->name + 1);
+		printf("%u\t%d\t has taken a fork\n",
+			   _get_time_(dt->philo->start_time), dt->name + 1);
+		pthread_mutex_lock(&dt->ph_mutex);
+		printf("%u\t%d\t is eating\n",
+			   _get_time_(dt->philo->start_time), dt->name + 1);
 	}
 	else if (task == SLEEP)
-		printf("%u\t%d\t is sleeping\n", \
-			_get_time_(dt->philo->start_time), dt->name + 1);
+		printf("%u\t%d\t is sleeping\n",
+			   _get_time_(dt->philo->start_time), dt->name + 1);
 	else if (task == THINK)
-		printf("%u\t%d\t is thinking\n", \
-			_get_time_(dt->philo->start_time), dt->name + 1);
+		printf("%u\t%d\t is thinking\n",
+			   _get_time_(dt->philo->start_time), dt->name + 1);
 	pthread_mutex_unlock(&dt->philo->print);
 }
 
-void	*_death_checker_(void *data)
+void *_death_checker_(void *data)
 {
-	t_pdata	*dt;
+	t_pdata *dt;
 
 	dt = (t_pdata *)data;
 	while (1)
 	{
+		pthread_mutex_lock(&dt->ph_mutex);
 		if (dt->limit < _get_time_(0U))
 		{
 			pthread_mutex_lock(&dt->philo->print);
-			printf("%u\t%d\t died\n", \
-				_get_time_(dt->philo->start_time), dt->name + 1);
+			printf("%u\t%d\t died\n",
+				   _get_time_(dt->philo->start_time), dt->name + 1);
 			pthread_mutex_unlock(&dt->philo->p_hold);
 			dt->philo->is_alive = 0;
-			break ;
+			break;
 		}
+		pthread_mutex_unlock(&dt->ph_mutex);
 		usleep(50);
 	}
 	return (data);
 }
 
-void	*_tasks_(void *data)
+void *_tasks_(void *data)
 {
-	t_pdata	*dt;
+	t_pdata *dt;
 
 	dt = (t_pdata *)data;
 	dt->limit = _get_time_(0U) + dt->philo->t_die;
@@ -82,6 +85,7 @@ void	*_tasks_(void *data)
 		dt->limit = _get_time_(0U) + dt->philo->t_die;
 		usleep(dt->philo->t_eat * 1000);
 		dt->nbr_eatings++;
+		pthread_mutex_unlock(&dt->ph_mutex);
 		pthread_mutex_unlock(&dt->philo->forks[dt->l_fork]);
 		pthread_mutex_unlock(&dt->philo->forks[dt->r_fork]);
 		_print_(dt, SLEEP);

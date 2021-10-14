@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:54:13 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/08 17:40:42 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/14 17:50:25 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	_init_each_philo_(t_pdata *pd, int i)
 	pd->l_fork = i;
 	pd->r_fork = (i + 1) % pd->philo->nbr_ps;
 	pd->limit = 0U;
+	pthread_mutex_init(&pd->ph_mutex, NULL);
 }
 
 int	_allocation_(t_philo *ph)
