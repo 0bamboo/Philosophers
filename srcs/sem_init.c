@@ -19,7 +19,6 @@ void	_clean_(t_philo *philo)
 	i = 0;
 	while (i < (unsigned int)philo->nbr_ps)
 	{
-		puts("killed");
 		kill(philo->pdata[i].pid, SIGTERM);
 		i++;
 	}

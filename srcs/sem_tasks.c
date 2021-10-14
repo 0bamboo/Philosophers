@@ -24,7 +24,6 @@ unsigned int	_get_time_(unsigned int start)
 
 void	_print_(t_pdata *dt, int task)
 {
-	// pthread_mutex_lock(&dt->philo->print);
 	sem_wait(dt->philo->print_b);
 	if (task == FORK)
 		printf("%u\t%d\t has taken a fork\n", \
@@ -43,7 +42,6 @@ void	_print_(t_pdata *dt, int task)
 		printf("%u\t%d\t is thinking\n", \
 			_get_time_(dt->philo->start_time), dt->name + 1);
 	sem_post(dt->philo->print_b);
-	// pthread_mutex_unlock(&dt->philo->print);
 }
 
 void	*_death_checker_(void *data)
@@ -51,23 +49,36 @@ void	*_death_checker_(void *data)
 	t_pdata	*dt;
 
 	dt = (t_pdata *)data;
-	while (1)
+	while (dt->philo->is_alive)
 	{
-		// sem_wait(dt->ph);
+		sem_wait(dt->ph);
 		if (dt->limit < _get_time_(0U))
 		{
 			sem_wait(dt->philo->print_b);
 			printf("%u\t%d\t died\n", \
 				_get_time_(dt->philo->start_time), dt->name + 1);
-			sem_post(dt->philo->print_b);
 			sem_post(dt->philo->p_hold_b);
-			dt->philo->is_alive = 0;
 			break ;
 		}
 		sem_post(dt->ph);
 		usleep(100);
 	}
 	return (data);
+}
+
+void	_tasks_continue_(t_pdata *dt)
+{
+	sem_wait(dt->ph);
+	sem_wait(dt->philo->forks_b);
+	_print_(dt, FORK);
+	sem_wait(dt->philo->forks_b);
+	_print_(dt, EAT);
+	dt->limit = _get_time_(0U) + dt->philo->t_die;
+	usleep(dt->philo->t_eat * 1000);
+	dt->nbr_eatings++;
+	sem_post(dt->ph);
+	sem_post(dt->philo->forks_b);
+	sem_post(dt->philo->forks_b);
 }
 
 void	*_tasks_(void *data)
@@ -80,25 +91,18 @@ void	*_tasks_(void *data)
 	pthread_detach(dt->philo->death_checker);
 	while (dt->philo->is_alive)
 	{
-		// sem_wait(dt->philo->print_b);
-		// printf("alive = |%d|\n", dt->philo->is_alive);
-		// sem_post(dt->philo->print_b);
-		// sem_wait(dt->ph);
-		sem_wait(dt->philo->forks_b);
-		_print_(dt, FORK);
-		sem_wait(dt->philo->forks_b);
-		_print_(dt, EAT);
-		dt->limit = _get_time_(0U) + dt->philo->t_die;
-		usleep(dt->philo->t_eat * 1000);
-		dt->nbr_eatings++;
-		// sem_post(dt->ph);
-		sem_post(dt->philo->forks_b);
-		sem_post(dt->philo->forks_b);
-		_print_(dt, SLEEP);
-		usleep(dt->philo->t_sleep * 1000);
-		_print_(dt, THINK);
-		if (dt->philo->nbr_peat && dt->nbr_eatings == dt->philo->nbr_peat)
-			dt->philo->nbr_philos_meat++;
+		_tasks_continue_(dt);
+		if (dt->nbr_eatings != dt->philo->nbr_peat)
+		{
+			_print_(dt, SLEEP);
+			usleep(dt->philo->t_sleep * 1000);
+			_print_(dt, THINK);
+		}
+		if (dt->nbr_eatings == dt->philo->nbr_peat)
+		{
+			sem_post(dt->philo->eat_b);
+			dt->philo->is_alive = 0;
+		}
 	}
 	return (data);
 }
