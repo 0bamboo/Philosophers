@@ -6,7 +6,7 @@
 /*   By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 14:47:33 by abdait-m          #+#    #+#             */
-/*   Updated: 2021/10/13 20:24:42 by abdait-m         ###   ########.fr       */
+/*   Updated: 2021/10/14 16:18:47 by abdait-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,9 @@ int	_check_options_(t_philo *philo)
 		if (philo->error)
 			return (1);
 	}
-	if (philo->int_options[0] < 1 || philo->int_options[0] > 200 || philo->int_options[1] < 60
-		|| philo->int_options[2] < 60 || philo->int_options[3] < 60)
+	if (philo->int_options[0] < 1 || philo->int_options[0] > 200 || \
+		philo->int_options[1] < 60 || philo->int_options[2] < 60 || \
+		philo->int_options[3] < 60)
 		return (1);
 	_set_vars_(philo);
 	return (0);

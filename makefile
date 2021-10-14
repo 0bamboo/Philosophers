@@ -6,7 +6,7 @@
 #    By: abdait-m <abdait-m@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/22 16:25:54 by abdait-m          #+#    #+#              #
-#    Updated: 2021/10/13 20:59:03 by abdait-m         ###   ########.fr        #
+#    Updated: 2021/10/14 16:12:00 by abdait-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ LIBFT_LIB = $(LIBFT)/libft.a
 
 FILES = ./srcs/parse.c ./srcs/error.c ./srcs/start.c ./srcs/tasks.c
 
-FILES_SEM = ./srcs/parse.c ./srcs/sem_start.c ./srcs/sem_tasks.c ./srcs/sem_init.c
+FILES_SEM = ./srcs/parse.c ./srcs/sem_start.c ./srcs/sem_tasks.c ./srcs/sem_init.c ./srcs/sem_create.c
 
 HEADER = ./header/philosophers.h
 

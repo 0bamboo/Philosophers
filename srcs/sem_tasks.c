@@ -32,6 +32,7 @@ void	_print_(t_pdata *dt, int task)
 	{
 		printf("%u\t%d\t has taken a fork\n", \
 			_get_time_(dt->philo->start_time), dt->name + 1);
+		sem_wait(dt->ph);
 		printf("%u\t%d\t is eating\n", \
 			_get_time_(dt->philo->start_time), dt->name + 1);
 	}
@@ -68,7 +69,6 @@ void	*_death_checker_(void *data)
 
 void	_tasks_continue_(t_pdata *dt)
 {
-	sem_wait(dt->ph);
 	sem_wait(dt->philo->forks_b);
 	_print_(dt, FORK);
 	sem_wait(dt->philo->forks_b);

@@ -12,35 +12,7 @@
 
 #include "../header/philosophers.h"
 
-int _create_semaphore_(const char *sem_name, int val, sem_t **sem)
-{
-	sem_unlink(sem_name);
-	*sem = sem_open(sem_name, O_CREAT | O_EXCL, 700, val);
-	if (*sem == SEM_FAILED)
-	{
-		printf("%s semphore error\n", sem_name);
-		return (1);
-	}
-	return (0);
-}
-
-int _semaphores_(t_philo *philo)
-{
-	if (_create_semaphore_("forks_b", philo->nbr_ps, &philo->forks_b) ||
-		_create_semaphore_("print_b", 1, &philo->print_b) ||
-		_create_semaphore_("p_hold_b", 1, &philo->p_hold_b) ||
-		_create_semaphore_("eat_b", 1, &philo->eat_b))
-		return (1);
-	return (0);
-}
-
-int _allocation_error_(void)
-{
-	printf("\033[31m Allocation Error .\033[0m\n");
-	return (1);
-}
-
-int _allocation_(t_philo *ph)
+int	_allocation_(t_philo *ph)
 {
 	ph->pdata = malloc(sizeof(t_pdata) * ph->nbr_ps);
 	if (!ph->pdata)
@@ -48,9 +20,9 @@ int _allocation_(t_philo *ph)
 	return (0);
 }
 
-void *_eat_checker_(void *data)
+void	*_eat_checker_(void *data)
 {
-	t_philo *ph;
+	t_philo	*ph;
 
 	ph = (t_philo *)data;
 	while (1)
@@ -60,8 +32,8 @@ void *_eat_checker_(void *data)
 		if (ph->nbr_ps == ph->nbr_philos_meat)
 		{
 			sem_wait(ph->print_b);
-			printf("%u\t End of simulation .\n",
-				   _get_time_(ph->start_time));
+			printf("%u\t End of simulation .\n", \
+				_get_time_(ph->start_time));
 			sem_post(ph->print_b);
 			sem_post(ph->p_hold_b);
 			return (data);
@@ -71,9 +43,9 @@ void *_eat_checker_(void *data)
 	return (data);
 }
 
-int _init_philos_(t_philo *philo)
+int	_init_philos_(t_philo *philo)
 {
-	int i;
+	int	i;
 
 	if (_allocation_(philo) || _semaphores_(philo))
 		return (1);
@@ -83,15 +55,15 @@ int _init_philos_(t_philo *philo)
 		philo->pdata[i].philo = philo;
 		_init_each_philo_sem_(&philo->pdata[i], i, philo->nbr_ps);
 	}
-	pthread_create(&philo->eat_checker, NULL,
-				   &_eat_checker_, (void *)philo);
+	pthread_create(&philo->eat_checker, NULL, \
+		&_eat_checker_, (void *)philo);
 	pthread_detach(philo->eat_checker);
 	return (0);
 }
 
-int _start_program_(t_philo *philo)
+int	_start_program_(t_philo *philo)
 {
-	int i;
+	int	i;
 
 	if (_init_philos_(philo))
 		return (1);

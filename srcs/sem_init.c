@@ -62,6 +62,12 @@ int	_error_(void)
 	return (1);
 }
 
+int	_allocation_error_(void)
+{
+	printf("\033[31m Allocation Error .\033[0m\n");
+	return (1);
+}
+
 void	_init_each_philo_sem_(t_pdata *pd, int i, int nbr_philos)
 {
 	pd->name = i;
