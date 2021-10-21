@@ -7,7 +7,7 @@
 
 ## resources :
    
-*https://computing.llnl.gov/tutorials/parallel_comp/
+ *https://computing.llnl.gov/tutorials/parallel_comp/
 *https://computing.llnl.gov/tutorials/pthreads/
 *https://timmurphy.org/2010/05/04/pthreads-in-c-a-minimal-working-example/
 *https://franckh.developpez.com/tutoriels/posix/pthreads/
