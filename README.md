@@ -1,7 +1,7 @@
 #  :monocle_face:	 Philosophers
  In this project, you will learn the basics of threading a process and how to work on the same memory space. You will learn how to make threads. You will discover the mutex, semaphore and shared memory.
 
- <img src="https://github.com/nowl01/">
+ <img src="https://github.com/nowl01/Philosophers/blob/master/res/An_illustration_of_the_dining_philosophers_problem.png">
 
 
 
