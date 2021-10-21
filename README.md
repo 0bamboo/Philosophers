@@ -1,9 +1,9 @@
 #  :monocle_face:	 Philosophers
  In this project, you will learn the basics of threading a process and how to work on the same memory space. You will learn how to make threads. You will discover the mutex, semaphore and shared memory.
 
+## The problem :
+ The Dining Philosopher Problem states that K philosophers seated around a circular table with one chopstick between each pair of philosophers. There is one chopstick between each philosopher. A philosopher may eat if he can pick up the two chopsticks adjacent to him. One chopstick may be picked up by any one of its adjacent followers but not both. 
  <img src="https://github.com/nowl01/Philosophers/blob/master/res/An_illustration_of_the_dining_philosophers_problem.png">
-
-
 
 ## resources :
    
